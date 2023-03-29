@@ -31,13 +31,8 @@ public class UserService {
                 .orElseThrow(() -> new NotFoundException("User with id " + id + " not exists in the DB"));
     }
 
-    public UserDto getNewest() {
-        return userDao.findNewest().map(UserMapper::toUserDto)
-                .orElseThrow(() -> new NotFoundException("Something went wrong"));
-    }
 
-
-    public void create(UserDto userDto) {
+    public User create(UserDto userDto) {
         if (userDto.getEmail() == null || userDto.getEmail().isBlank()) {
             throw new BadRequestException("Email can't be null");
         }
@@ -46,6 +41,7 @@ public class UserService {
         }
         User user = UserMapper.fromUserDto(userDto);
         userDao.create(user);
+        return user;
     }
 
     public void update(long id, UserDto userDto) {

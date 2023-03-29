@@ -31,12 +31,6 @@ public class UserDaoImpl implements Dao<User> {
     }
 
     @Override
-    public Optional<User> findNewest() {
-        long newestId = new ArrayList<>(users.keySet()).get(users.keySet().size() - 1);
-        return findById(newestId);
-    }
-
-    @Override
     public void create(User user) {
         Optional<User> existedUser = findUserWithSameEmail(user);
         if (existedUser.isPresent()) {

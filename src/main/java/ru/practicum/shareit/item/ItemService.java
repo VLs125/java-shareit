@@ -1,6 +1,5 @@
 package ru.practicum.shareit.item;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.exception.BadRequestException;
@@ -14,7 +13,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Slf4j
 public class ItemService {
 
     private final ItemDaoImp itemDao;
@@ -52,12 +50,7 @@ public class ItemService {
         return items.stream().map(ItemMapper::toItemDto).collect(Collectors.toList());
     }
 
-    public ItemDto getNewest() {
-        return itemDao.findNewest().map(ItemMapper::toItemDto)
-                .orElseThrow(() -> new NotFoundException("Something went wrong"));
-    }
-
-    public void create(ItemDto itemDto) {
+    public Item create(ItemDto itemDto) {
         if (itemDto.getAvailable() == null) {
             throw new BadRequestException("Available flag can't be null");
         }
@@ -69,6 +62,7 @@ public class ItemService {
         }
         Item item = ItemMapper.fromItemDto(itemDto);
         itemDao.create(item);
+        return item;
     }
 
     public void update(long itemId, long userId, ItemDto itemDto) {

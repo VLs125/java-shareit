@@ -46,11 +46,6 @@ public class ItemDaoImp implements Dao<Item> {
         return item;
     }
 
-    @Override
-    public Optional<Item> findNewest() {
-        long newestId = new ArrayList<>(items.keySet()).get(items.keySet().size() - 1);
-        return findById(newestId);
-    }
 
     @Override
     public void create(Item item) {

@@ -1,5 +1,6 @@
 package ru.practicum.shareit.item;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.user.User;
@@ -13,16 +14,11 @@ import java.util.List;
  * TODO Sprint add-controllers.
  */
 @RestController
+@RequiredArgsConstructor
 public class ItemController {
 
     private final ItemService itemService;
     private final UserService userService;
-
-    @Autowired
-    public ItemController(ItemService itemService, UserService userService) {
-        this.itemService = itemService;
-        this.userService = userService;
-    }
 
     @GetMapping("/items")
     public List<ItemDto> getItems(@RequestHeader(value = "X-Sharer-User-Id", required = false) Long userId) {
@@ -44,12 +40,11 @@ public class ItemController {
     }
 
     @PostMapping(value = "/items")
-    public ItemDto create(@Valid @RequestBody ItemDto itemDto, @RequestHeader("X-Sharer-User-Id") long userId) {
+    public Item create(@Valid @RequestBody ItemDto itemDto, @RequestHeader("X-Sharer-User-Id") long userId) {
         User owner = UserMapper.fromUserDto(userService.getById(userId));
         owner.setId(userId);
         itemDto.setOwner(owner);
-        itemService.create(itemDto);
-        return itemService.getNewest();
+        return itemService.create(itemDto);
 
     }
 

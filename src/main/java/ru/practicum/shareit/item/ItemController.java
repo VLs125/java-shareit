@@ -10,11 +10,8 @@ import ru.practicum.shareit.user.UserService;
 import javax.validation.Valid;
 import java.util.List;
 
-/**
- * TODO Sprint add-controllers.
- */
 @RestController
-@RequiredArgsConstructor
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ItemController {
 
     private final ItemService itemService;
